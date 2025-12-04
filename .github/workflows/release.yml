@@ -1,0 +1,40 @@
+name: Build and release
+
+on:
+    push:
+        tags:
+            - "v*.*.*"
+
+jobs:
+    build-and-release:
+        runs-on: windows-latest
+
+        steps:
+            - name: Checkout sources
+              uses: actions/checkout@v4
+
+            - name: Install Rust
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+
+            - name: Build release binary
+              run: cargo build --release --locked
+
+            - name: Archive binary
+              run: |
+                  mkdir -p dist
+                  copy target\release\file-explorer.exe dist\file-explorer-${{ github.ref_name }}-windows.exe
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ github.ref_name }}
+                  name: ${{ github.ref_name }}
+                  draft: false
+                  prerelease: false
+                  files: |
+                      dist/file-explorer-${{ github.ref_name }}-windows.exe
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
