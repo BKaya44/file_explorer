@@ -22,7 +22,7 @@ impl Default for FileExplorerApp {
             current_path: current_path.clone(),
             entries: Vec::new(),
             error_msg: None,
-            bookmarks: Vec::new(),
+            bookmarks: crate::services::bookmarks::load_bookmarks(),
             drives: Vec::new(),
             selected_index: None,
             last_click_time: 0.0,

@@ -23,7 +23,7 @@ cargo run
 ### Planned features
 
 - More options to `right click` menu
-- Save bookmarks
+- Remove bookmark when folder is deleted (currently only removed when app loads)
 - Shortcuts
 - Better UI design
 - Icons
