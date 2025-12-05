@@ -19,6 +19,7 @@ cargo run
 - Open files
 - Add folder to bookmarks
 - Remove folder from bookmarks
+- Go back/forward on visited folders
 
 ### Planned features
 

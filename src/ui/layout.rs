@@ -5,6 +5,23 @@ use std::path::PathBuf;
 pub fn top_bar(app: &mut FileExplorerApp, ctx: &egui::Context) {
     egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
         ui.horizontal(|ui| {
+            if ui
+                .add_enabled(app.history_index > 0, egui::Button::new("<-"))
+                .clicked()
+            {
+                app.go_back();
+            }
+            if ui
+                .add_enabled(
+                    app.history_index < app.history.len() - 1,
+                    egui::Button::new("->"),
+                )
+                .clicked()
+            {
+                app.go_forward();
+            }
+            ui.separator();
+
             let path_str = app.current_path.to_string_lossy().to_string();
             let parts: Vec<&str> = if cfg!(target_os = "windows") {
                 path_str.split('\\').filter(|s| !s.is_empty()).collect()
@@ -27,7 +44,6 @@ pub fn top_bar(app: &mut FileExplorerApp, ctx: &egui::Context) {
         });
     });
 }
-
 pub fn side_panel(app: &mut FileExplorerApp, ctx: &egui::Context) {
     egui::SidePanel::left("left_panel")
         .min_width(200.0)
